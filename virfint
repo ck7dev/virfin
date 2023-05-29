@@ -1,0 +1,100 @@
+---
+title: "Viralização em redes financeiras direcionais"
+output: pdf_document
+---
+
+# 1. Definição do problema
+
+Dado que o processo de *distress* financeiro (como uma falência ou um pedido de reparação extrajudicial) propaga-se ao longo da rede financeira ocasionando um efeito em cadeia de contaminação econômica, o objetivo do projeto consiste em modelar e prever com precisão satisfatória tal efeito de viralização / propagação epidêmica tomando determinada empresa como paciente zero. São concebidos distintos tipos de rede (em termos de direcionamento das arestas e composição de nós e arestas). As subseções seguintes
+
+## 1.1 Redes financeiras
+
+Uma rede financeira é um grafo direcional $\mathcal{G} = (\mathcal{V},\mathcal{A})$ caracterizado por entidades financeiras em seus vértices $\mathcal{V}$ e as transações financeiras entre as mesmas em suas arestas $\mathcal{A}$. A depender do direcionamento de $\mathcal{A}$, pode-se ter uma rede com visão fornecedor (paciente zero consiste no nó origem, de onde saem as arestas) ou com visão cliente (paciente zero consiste no nó destino, para onde convergem as arestas). 
+
+## 1.2 Configurações de redes
+
+Para além das variantes direcionais mencionadas, pode-se compôr a rede a partir de diferentes níveis de granularidade, proporcionando uma visão mais macro ou mais micro. 
+
+## 1.3 Difusão temporal em redes
+
+O processo de viralização, tomando como *input* determinada instituição em reparação extrajudicial (paciente zero) pode ser modelado como uma difusão temporal em uma rede. Sendo a empresa *i* o paciente zero e sua saúde financeira *H* no período *t* $H_{i}(t)$. Um exemplo simples (e puramente linear) para modelagem deste processo em função das transações com nós vizinhos seria dado por:
+
+$$ \frac{dH_{i}(t)}{dt} = -\sum^{}_{j \in N(i)}W_{ij}H_j(t) $$
+
+# 3. Referência: Simulating virus diffusion in networks with quantum computers
+
+## 3.1 Introdução
+No artigo de referência "Simulating virus diffusion in networks with quantum computers" [Wang et al, 2022], os autores propôem a utilização de ferramentas de mecânica quântica para a simulação de difusão viral em redes. Propomos utilizar um paralelo desta abordagem, mapeando a difusão viral em uma população para a propagação de *financial distress* em uma rede financeira.
+
+## 3.2 Fenomenologia
+O modelo *SI* (*Suscetible/Infected*) é comumente utilizado em modelagens preditivas de epidemias. Ele baseia-se na divisão da população em duas classes apartadas, Suscetíveis e Infectados. As interações entre as duas classes são governadas por equações diferenciais, que caracterizam a disseminação da epidemia. Neste contexto, a taxa de variação da população suscetível ao longo do tempo é dada pela equação:
+
+$$ \frac{dS}{dt} = - \beta \kappa SI $$
+
+Onde $\beta$ é um parâmetro que indica probabilidade de transmissão pelo contato e $\kappa$ é o número de contatos médios entre indivíduos nas populações suscetível e infectada (i.e é uma medida de interação social média, e diz respeito aos indivíduos da população como um todo, independentemente da classe). Em nosso caso, $\beta$ pode ser concebido como a probabilidade de *financial distress* (falência, pedido de reparação extrajudicial) e, $\kappa$, a "magnitude" do vínculo financeiro, com base no montante e/ou quantidade de transações.
+Os autores tentam refinar este modelo clássico para o âmbito microscópico, onde deixam de tomar a população como um todo para considerar seus indivíduos/nós, de modo que $S$ passa a denotar o indivíduo (em nosso caso, empresa ou grupo de empresas) $S_i$. Além disso, o artigo modela o estado inicial de propagação, no qual os indivíduos expostos ainda não são capazes de retransmitir a doença. Assim, *I* pode ser tratado como constante e a equação refinada se torna:
+
+$$ \frac{dS_j}{dt} = -\sum_{i \in I} \beta \kappa_{ij}I_i S_j,\text{  } \forall j \in S $$
+Como *I* é independente do tempo, a equação pode ser resolvida analiticamente e o resultado é dado por:
+
+$$ P_{j}(t) = \frac{S_j(t)}{S_j(0)} = e^{-\beta \sum_{i \in I}\kappa_{ij}I_{i}t}$$
+Assim, a equação provê um modelo de decaimento exponencial da probabilidade de sobrevivência para cada comunidade suscetível. A taxa de decaimento é influenciada por $\beta$ e $\kappa_{ij}$, que se relacionam a características de transmissão do vírus e vínculo social, respectivamente. Em nosso caso, tal modelo estimaria a probabilidade de sobrevivência financeira de uma empresa ou grupo de empresas, exibindo uma tendência de decaimento exponencial. A taxa de decaimento é influenciada pelos parâmetros  $\beta$ (que, no caso, representa a vulnerabilidade/resistência do nó a um quadro de *financial distress*, em virtude de aspectos como estabilidade financeira e gestão de riscos) e $\kappa_{ij}$, que representa a magnitude e natureza dos vínculos financeiros entre as instituições/grupos de instituições.
+
+## 3.3 Modelo térmico dinâmico
+
+Os autores propõem um modelo dinâmico para simular o contágio ao longo da população. Cada nó da rede (em nosso caso, empresas ou grupos de empresas) é mapeado a um qubit. Os dois autovetores do operador Z de Pauli são usados para codificar dois estados ortogonais/extremos: todas as instituições em situação de *distress* financeiro ($\langle 1 \rangle$) e todas as instituições em situação de saúde financeira ($\langle 0 \rangle$). A probaabilidade de saúde financeira $P_i$ para cada nó *i* é determinado pela esperança do operador $Z$ dado pela expressão:
+
+$$ P_{i}(t) = \frac{1 + \langle Z_i \rangle_t}{2}$$
+
+A esperança de $\langle Z_i \rangle_t$ é dependente do estado do sistema no tempo *t*. Tal estado é descrito pelo operador de densidade $\rho(t)$ e seu valor esperado é dado por:
+
+$$ \langle Z_i \rangle_t = \text{Tr}(\rho(t)Z_i) $$
+
+Apesar deste processo de difusão ser tipicamente clássico, os autores utilizam técnicas inspiradas em mecânica quântica e argumentam que, sob certas condições, a dinâmica clássica predominará na evolução temporal do sistema quântico. Assim, a difusão temporal do *distress* financeiro pode ser modelado por mecânica quantica.
+
+Utiliza-se o moelo de Ising para definir a Hamiltoniana do sistema, caracterizada por:
+
+$$ H_s = -\sum_{i \in I} \sum_{j \in S} y_{ij} Z^{s}_{i}Z^{s}_{j}, \text{  }y_{ij} > 0  $$
+
+Onde $y_{ij}$ indica a força da interação (por exemplo, fluxo financeiro) entre nós. Para lidar com o aspecto dinâmico do sistema, é introduzido um banho térmico (que, em nosso caso, pode indicar o cenário econômico mais amplo e suas interações com a rede financeira). A Hamiltoniana, com esta inclusão, torna-se:
+
+$$ H = H_{s} \otimes I_{\text{b}} + I_S \otimes H_b + \lambda H_{sb}  $$
+
+Onde $H_b$ é a Hamiltoniana do banho térmico, $\lambda$ é o parâmetro de força da interação do sistema com o ambiente/banho e  térmico $I_S$ e $I_b$ são os operadores identidade associados ao sistema e ao banho térmico nos espaços de Hilbert correspondentes. Se o banho térmico é infinitamente grande (se é válida a assunção de "mercado infinito"), então o sistema evoluirá para um estado de Gibbs:
+
+$$ \rho_{S} = \frac{\text{exp\{}-\frac{H_s}{kbT}\}}{\text{Tr}(\text{exp\{}-\frac{H_s}{kbT}\} )} $$
+
+Onde *T* representa a temperatura do banho térmico e $kb$ representa uma constante análoga à constante de Boltzmann. A Hamiltoniana de interação $H_{sb}$ é escolhida de forma a ser local e uniforme ao longo de todos os nós, de forma que a Hamiltoniana se torna:
+
+$$ H_{sb} = -\sum_{i \in I}\sum_{j \in S} y_{ij} Z^{s}_{i}Z^{s}_{j} - \lambda \sum_{i \in I \cup S}X^{s}_{i}X^{b}_{i} - \alpha \sum_{i \in I}\sum_{j \in S} Z^{b}_{i}Z^{b}_{j} $$
+
+Onde $X_si$ e $X_bi$ são os operadores *X* de Pauli atuando no sistema e no banho térmico no i-ésimo caso, respectivamente. Tal processo exige complexidade computacional $2(\text{Card(S)} + \text{Card(}I))$, e os parâmetros $\beta$, $\kappa_{ij}$ e $\alpha$ podem ser determinadas a partir de características do mercado e da rede [?].
+
+## 3.4 Simulação numérica e determinação de parâmetros
+
+Os autores, posteriormente, descrevem a metodologia utilizada e o processo de estimação de parâmetros, compreendendo os seguintes componentes principais:
+- Simulação quântica: A simulação quântica é feita via Qiskit SDK. A evolução da Hamiltoniana é decomposta em passos de Troper a partir da decomposição de Tropper. Cada passo de Tropper representa um intervalo mínimo de tempo denotado por $\delta b$. 
+- Inicialização de estados: A distinção de infectados e suscetíveis (nós com *distress* financeiro ou saúde financeira, em nosso caso) é realizada a partir da atribuição de estados $\langle 1 \rangle$ e  $\langle 0 \rangle$, respectivamente
+- Controle: os autores controlam a dinâmica do sistema determinando pacientes que estão sempre *distressed*, e cujos estados são resetados depois de um tempo *t*, configurado em todas as simulações numéricas como 1
+Inicialmente, é simulado o caso simples com apenas um paciente indexado, para o qual a Hamiltoniana se torna:
+
+$$ H_{sb} = -\sum_{j > 0} y_{0j} Z^{s}_{0}Z^{s}_{j} - \lambda \sum_{j > 0}X^{s}_{i}X^{b}_{i} - \alpha \sum_{j > 0} Z^{b}_{0}Z^{b}_{j} $$
+<p> </p>
+### 3.4.1 Determinação do parâmetro de acoplamento sistema x contexto (banho térmico)
+[Completar]
+
+<p> </p>
+### 3.4.2 Parâmetro de acoplamento intersistêmico e padrão de contato
+[Completar]
+
+<p> </p>
+### 3.4.3 Simulação para mais pacientes
+[Completar]
+
+<p> </p>
+## 3.5 Discussão e conclusões
+[Completar]
+
+## 4. Adaptação ao problema de *distress* financeiro
+
+[Completar]
